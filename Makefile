@@ -19,27 +19,44 @@ DF				:= Dockerfile
 RED			:= \033[31m
 RESET		:= \033[0m
 
-all: env build
+# command
 
-env:
-	if [ ! -f $(ENV_FILE) ]; then \
-		echo "$(RED)Error: environment variable not found at $(ENV_FILE)!"$(RESET); \
-		exit 1; \
-	fi
+RM	:= rm -rf
 
-build: $(DOCKER_COMPOSE)
-	@echo "Building containers..."
-	@docker-compose -f $(DOCKER_COMPOSE) build
+$(VOLUME):
+	mkdir -p $(VOLUME)
 
-up: build
+$(VOLUME_MARIADB):
+	mkdir -p $(VOLUME_MARIADB)
 
-clean:
+$(VOLUME_WORDPRESS):
+	mkdir -p $(VOLUME_WORDPRESS)
 
-# Completely stop and remove all containers
+all: up
+
+up: $(ENV_FILE) $(DOCKER_COMPOSE) $(VOLUME) $(VOLUME_MARIADB) $(VOLUME_WORDPRESS)
+	docker-compose -f $(DOCKER_COMPOSE) build
+
+down: 
+	docker-compose -f $(DOCKER_COMPOSE) down
+
+clean: down
+	$(RM) $(VOLUME_MARIADB) $(VOLUME_WORDPRESS)
+	docker system prune -af
+	docker volume prune -f
+
+# Completely stop and delete all containers
 
 fclean: clean
+	docker stop $(docker ps -qa)
+	docker rm $(docker ps -qa)
+	docker rmi -f $(docker images -qa)
+	docker volume rm $(docker volume ls -q)
+	docker network rm $(docker network ls -q)
+#	2>/dev/null
 
-re:
+
+re: down up
 
 restart:
 
