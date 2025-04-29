@@ -13,7 +13,7 @@ VOLUME				:= /home/$(USER)/data
 VOLUME_MARIADB		:= $(VOLUME)/mariadb
 VOLUME_WORDPRESS	:= $(VOLUME)/wordpress
 
-DOCKER_COMPOSE	:= $(SRCS)/docker-compose.yml
+DOCKER_COMPOSE	:= ./$(SRCS)/docker-compose.yml
 
 # command
 
@@ -28,13 +28,14 @@ $(VOLUME_MARIADB):
 $(VOLUME_WORDPRESS):
 	mkdir -p $(VOLUME_WORDPRESS)
 
-all: up
+up: 
+	docker-compose -f $(DOCKER_COMPOSE) --build -d
 
-up: $(ENV_FILE) $(DOCKER_COMPOSE) $(VOLUME) $(VOLUME_MARIADB) $(VOLUME_WORDPRESS)
-	docker-compose -f $(DOCKER_COMPOSE) build
+all: $(ENV_FILE) $(DOCKER_COMPOSE) $(VOLUME) $(VOLUME_MARIADB) $(VOLUME_WORDPRESS)
+	up
 
 down: 
-	docker-compose -f $(DOCKER_COMPOSE) down
+	sudo docker-compose -f $(DOCKER_COMPOSE) down
 
 clean: down
 	docker system prune -af
