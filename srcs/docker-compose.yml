@@ -1,9 +1,9 @@
 version: "3"
 services:
   mariadb:
-    build: src/mariadb
+    build: srcs/mariadb
     container_name: mariadb
-    restart: unless_stopped
+    restart: unless-stopped
     env_file:
       - .env
     volumes:
@@ -11,14 +11,52 @@ services:
     networks:
       - inslaption
 
-
   nginx:
+    build: srcs/nginx
+    container_name: nginx
+    restart: unless-stopped
+    depends_on:
+      - wordpress
+    env_file:
+      - .env
+    ports:
+      - "443:443"
+    volumes:
+      - wordpress:/var/www/html
+    networks:
+      - inslaption
 
   wordpress:
+    build: srcs/wordpress
+    container_name: wordpress
+    restart: unless-stopped
+    depends_on:
+      - mariadb
+    env_file:
+      - .env
+    volumes:
+      - wordpress:/var/www/html
+    networks:
+      - inslaption
 
 networks:
   inslaption:
-    name: vinception
+    name: inslaption
     driver: bridge
 
 volumes:
+  mariadb:
+    name: mariadb_data
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${HOME}/data/mariadb
+
+  wordpress:
+    name: wordpress_data
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${HOME}/data/wordpress
