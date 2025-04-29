@@ -14,14 +14,10 @@ VOLUME_MARIADB		:= $(VOLUME)/mariadb
 VOLUME_WORDPRESS	:= $(VOLUME)/wordpress
 
 DOCKER_COMPOSE	:= $(SRCS)/docker-compose.yml
-DF				:= Dockerfile
-
-RED			:= \033[31m
-RESET		:= \033[0m
 
 # command
 
-RM	:= rm -rf
+REMOVE	:= sudo rm -rf
 
 $(VOLUME):
 	mkdir -p $(VOLUME)
@@ -41,9 +37,10 @@ down:
 	docker-compose -f $(DOCKER_COMPOSE) down
 
 clean: down
-	$(RM) $(VOLUME_MARIADB) $(VOLUME_WORDPRESS)
 	docker system prune -af
 	docker volume prune -f
+	$(REMOVE) $(VOLUME_MARIADB)
+	$(REMOVE) $(VOLUME_WORDPRESS)
 
 # Completely stop and delete all containers
 
@@ -54,7 +51,6 @@ fclean: clean
 	docker volume rm $(docker volume ls -q)
 	docker network rm $(docker network ls -q)
 #	2>/dev/null
-
 
 re: down up
 

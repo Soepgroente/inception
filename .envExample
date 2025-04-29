@@ -1,6 +1,4 @@
-#remove "Example" from the filename to use this file and place it in srcs/ directory
-
-DOMAIN_NAME=$(USER).42.fr
+DOMAIN_NAME=vvan-der.42.fr
 
 WP_DATABASE_NAME=wordpress
 WP_DATABASE_HOST=mariadb
