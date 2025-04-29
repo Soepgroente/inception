@@ -1,11 +1,13 @@
-DOMAIN_NAME=vvander.42.fr
+#remove "Example" from the filename to use this file and place it in srcs/ directory
+
+DOMAIN_NAME=$(USER).42.fr
 
 WP_DATABASE_NAME=wordpress
 WP_DATABASE_HOST=mariadb
 
-DB_ROOT_PASSWORD=veggie
-DB_USER=soep
-DB_PASSWORD=soep
+MARIADB_ROOT_PASSWORD=veggie
+MARIADB_USER=soep
+MARIADB_PASSWORD=soep
 
 WP_ADMIN=ziltoid
 WP_ADMIN_PASSWORD=theomniscient
