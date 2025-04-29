@@ -28,11 +28,10 @@ $(VOLUME_MARIADB):
 $(VOLUME_WORDPRESS):
 	mkdir -p $(VOLUME_WORDPRESS)
 
-up: 
+up: $(ENV_FILE) $(DOCKER_COMPOSE) $(VOLUME) $(VOLUME_MARIADB) $(VOLUME_WORDPRESS)
 	docker-compose -f $(DOCKER_COMPOSE) --build -d
 
-all: $(ENV_FILE) $(DOCKER_COMPOSE) $(VOLUME) $(VOLUME_MARIADB) $(VOLUME_WORDPRESS)
-	up
+all: up
 
 down: 
 	sudo docker-compose -f $(DOCKER_COMPOSE) down
