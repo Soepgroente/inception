@@ -28,17 +28,23 @@ $(VOLUME_MARIADB):
 $(VOLUME_WORDPRESS):
 	mkdir -p $(VOLUME_WORDPRESS)
 
-up: $(ENV_FILE) $(DOCKER_COMPOSE) $(VOLUME) $(VOLUME_MARIADB) $(VOLUME_WORDPRESS)
-	docker-compose -f $(DOCKER_COMPOSE) --build -d
+up:
+	sudo docker-compose -f $(DOCKER_COMPOSE) up --build -d
 
 all: up
+
+start:
+	sudo docker-compose -f $(DOCKER_COMPOSE) start
+
+stop:
+	sudo docker-compose -f $(DOCKER_COMPOSE) stop
 
 down: 
 	sudo docker-compose -f $(DOCKER_COMPOSE) down
 
 clean: down
-	docker system prune -af
-	docker volume prune -f
+	sudo docker system prune -af
+	sudo docker volume prune -f
 	$(REMOVE) $(VOLUME_MARIADB)
 	$(REMOVE) $(VOLUME_WORDPRESS)
 

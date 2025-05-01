@@ -1,7 +1,6 @@
-version: "3"
 services:
   mariadb:
-    build: srcs/mariadb
+    build: ./mariadb
     container_name: mariadb
     restart: unless-stopped
     env_file:
@@ -12,7 +11,7 @@ services:
       - inslaption
 
   nginx:
-    build: srcs/nginx
+    build: ./nginx
     container_name: nginx
     restart: unless-stopped
     depends_on:
@@ -27,7 +26,7 @@ services:
       - inslaption
 
   wordpress:
-    build: srcs/wordpress
+    build: ./wordpress
     container_name: wordpress
     restart: unless-stopped
     depends_on:
