@@ -16,4 +16,4 @@ RUN chmod +x /mariadb-script.sh
 
 EXPOSE 3306
 
-# CMD ["/mariadb-script.sh"]
+CMD ["/mariadb-script.sh"]
