@@ -1,7 +1,7 @@
 # At the time of setting this up, latest stable version of alpine is 3.21, penultimate version is 3.20
-FROM alpine:3.20
+FROM debian:bullseye
 
-RUN apk add --no-cache mariadb mariadb-client mariadb-server-utils
+RUN apt-get update -y && apt-get install -y mariadb-server && apt-get install -y curl
 
 # Creates database folder and gives ownership to mariaDB
 
@@ -16,4 +16,4 @@ RUN chmod +x /mariadb-script.sh
 
 EXPOSE 3306
 
-CMD ["/mariadb-script.sh"]
+# CMD ["/mariadb-script.sh"]

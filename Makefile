@@ -1,11 +1,10 @@
 # Locations for project
 
 SRCS		:= srcs
-MARIADB		:= $(SRCS)/mariadb
-NGINX		:= $(SRCS)/nginx
-WORDPRESS	:= $(SRCS)/wordpress
-SECRETS		:= $(SRCS)/.secrets
 ENV_FILE	:= $(SRCS)/.env
+NETWORK		:= inslaption
+MARIADB		:= mariadb
+WORDPRESS	:= wordpress
 
 # Location of persistent data
 
@@ -15,12 +14,7 @@ VOLUME_WORDPRESS	:= $(VOLUME)/wordpress
 
 DOCKER_COMPOSE	:= ./$(SRCS)/docker-compose.yml
 
-# command
-
 REMOVE	:= sudo rm -rf
-
-$(VOLUME):
-	mkdir -p $(VOLUME)
 
 $(VOLUME_MARIADB):
 	mkdir -p $(VOLUME_MARIADB)
@@ -28,10 +22,16 @@ $(VOLUME_MARIADB):
 $(VOLUME_WORDPRESS):
 	mkdir -p $(VOLUME_WORDPRESS)
 
-up:
-	sudo docker-compose -f $(DOCKER_COMPOSE) up --build -d
+all: check_env up
 
-all: up
+check_env:
+	if [ ! -f $(ENV_FILE) ]; then \
+	echo "Error: no .env file found in location $(ENV_FILE)"; \
+	exit 1; \
+	fi
+
+up: $(VOLUME_MARIADB) $(VOLUME_WORDPRESS)
+	sudo docker-compose -f $(DOCKER_COMPOSE) up --build -d
 
 start:
 	sudo docker-compose -f $(DOCKER_COMPOSE) start
@@ -42,24 +42,20 @@ stop:
 down: 
 	sudo docker-compose -f $(DOCKER_COMPOSE) down
 
-clean: down
+clean:
+	sudo docker-compose -f $(DOCKER_COMPOSE) down -v
 	sudo docker system prune -af
 	sudo docker volume prune -f
 	$(REMOVE) $(VOLUME_MARIADB)
 	$(REMOVE) $(VOLUME_WORDPRESS)
 
-# Completely stop and delete all containers
-
 fclean: clean
-	docker stop $(docker ps -qa)
-	docker rm $(docker ps -qa)
-	docker rmi -f $(docker images -qa)
-	docker volume rm $(docker volume ls -q)
-	docker network rm $(docker network ls -q)
+	sudo docker volume rm $(MARIADB) $(WORDPRESS)
+	sudo docker network rm $(NETWORK)
 #	2>/dev/null
 
-re: down up
+re: clean up
 
-restart:
+restart: fclean up
 
 .PHONY: all env build clean fclean re restart

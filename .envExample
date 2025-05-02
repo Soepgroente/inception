@@ -14,3 +14,5 @@ WP_ADMIN_EMAIL=ziltoid@gmail.com
 WP_USER=henk
 WP_USER_PASSWORD=sjon
 WP_USER_EMAIL=henk@gmail.com
+
+WP_ROOT_FOLDER=/var/www/html/wordpress
