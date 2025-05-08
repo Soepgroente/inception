@@ -16,17 +16,21 @@ DOCKER_COMPOSE	:= $(SRCS)/docker-compose.yml
 
 REMOVE	:= sudo rm -rf
 
-all: check_env up
+all: checks up
 
-check_env:
+checks:
+	@if ! docker info > /dev/null 2>&1; then \
+		echo "Error: Docker is not running."; \
+		exit 1; \
+	fi
 	@if [ ! -f $(ENV_FILE) ]; then \
 	echo "Error: no .env file found in location $(ENV_FILE)"; \
 	exit 1; \
 	fi
 
 up:
-	mkdir -p $(VOLUME_MARIADB)
-	mkdir -p $(VOLUME_WORDPRESS)
+	@mkdir -p $(VOLUME_MARIADB)
+	@mkdir -p $(VOLUME_WORDPRESS)
 	docker-compose -f $(DOCKER_COMPOSE) up --build -d
 
 start:

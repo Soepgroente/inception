@@ -10,6 +10,19 @@ services:
     networks:
       - inslaption
 
+  wordpress:
+    build: ./wordpress
+    container_name: wordpress
+    restart: unless-stopped
+    depends_on:
+      - mariadb
+    env_file:
+      - .env
+    volumes:
+      - wordpress:/var/www/html
+    networks:
+      - inslaption
+
   nginx:
     build: ./nginx
     container_name: nginx
@@ -20,19 +33,6 @@ services:
       - .env
     ports:
       - "443:443"
-    volumes:
-      - wordpress:/var/www/html
-    networks:
-      - inslaption
-
-  wordpress:
-    build: ./wordpress
-    container_name: wordpress
-    restart: unless-stopped
-    depends_on:
-      - mariadb
-    env_file:
-      - .env
     volumes:
       - wordpress:/var/www/html
     networks:
