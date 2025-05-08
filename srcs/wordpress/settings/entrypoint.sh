@@ -1,9 +1,9 @@
 #!/bin/bash
 
 mkdir -p /var/www/html/wordpress
-touch /run/php/php8.2-fpm.pid;
+# touch /run/php/php7.4-fpm.pid;
 chown -R www-data:www-data /var/www/*;
-chown -R 755 /var/www/*;
+chmod -R 755 /var/www/*;
 
 if [ ! -f wp-config.php ]; then
 
@@ -19,7 +19,7 @@ if [ ! -f wp-config.php ]; then
     echo "WordPress downloaded."
 
     echo "Waiting for MariaDB to connect..."
-    until mysqladmin -h${WP_DATABASE_HOST} -u${DB_USER} -p${DB_USER_PASSWORD} ping; do
+    until mysqladmin -h${WP_DATABASE_HOST} -u${MARIADB_USER} -p${MARIADB_USER_PASSWORD} ping; do
         sleep 1
     done
 
@@ -55,4 +55,4 @@ else
 fi
 
 echo "Starting PHP-FPM..."
-exec /usr/sbin/php-fpm8.2 -F
+exec /usr/sbin/php-fpm7.4 -F
