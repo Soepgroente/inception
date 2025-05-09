@@ -12,13 +12,14 @@ chown -R mysql:mysql /run/mysqld
 chown -R mysql:mysql /var/log/mysql
 chown -R mysql:mysql /var/lib/mysql
 
-# Pipes settings to mySQL initialisation
-
 # Check required environment variables
+
 if [[ -z "$MARIADB_DATABASE" || -z "$MARIADB_ROOT_PASSWORD" || -z "$MARIADB_USER" || -z "$MARIADB_USER_PASSWORD" ]]; then
   echo "Error: One or more required environment variables are missing."
   exit 1
 fi
+
+# Pipes settings to mySQL initialisation
 
 echo "Creating database"
 {

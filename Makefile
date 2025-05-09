@@ -12,6 +12,7 @@ VOLUME				:= /home/$(USER)/data
 VOLUME_MARIADB		:= $(VOLUME)/mariadb
 VOLUME_WORDPRESS	:= $(VOLUME)/wordpress
 
+COMPOSE			:= docker-compose -f
 DOCKER_COMPOSE	:= $(SRCS)/docker-compose.yml
 
 REMOVE	:= sudo rm -rf
@@ -31,21 +32,21 @@ checks:
 up:
 	@mkdir -p $(VOLUME_MARIADB)
 	@mkdir -p $(VOLUME_WORDPRESS)
-	docker-compose -f $(DOCKER_COMPOSE) up --build -d
+	$(COMPOSE) $(DOCKER_COMPOSE) up --build -d
 
 start:
-	docker-compose -f $(DOCKER_COMPOSE) start
+	$(COMPOSE) $(DOCKER_COMPOSE) start
 
 stop:
-	docker-compose -f $(DOCKER_COMPOSE) stop
+	$(COMPOSE) $(DOCKER_COMPOSE) stop
 
 down: 
-	docker-compose -f $(DOCKER_COMPOSE) down
+	$(COMPOSE) $(DOCKER_COMPOSE) down
 
 clean:
-	docker-compose -f $(DOCKER_COMPOSE) down
+	$(COMPOSE) $(DOCKER_COMPOSE) down
 	docker system prune -af
-	docker volume prune -f
+#	docker volume prune -f
 	$(REMOVE) $(VOLUME_MARIADB)
 	$(REMOVE) $(VOLUME_WORDPRESS)
 

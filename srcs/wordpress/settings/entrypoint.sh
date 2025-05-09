@@ -2,8 +2,6 @@
 
 mkdir -p /var/www/html/wordpress
 # touch /run/php/php7.4-fpm.pid;
-chown -R www-data:www-data /var/www/*;
-chmod -R 755 /var/www/*;
 
 if [ ! -f wp-config.php ]; then
 
@@ -53,6 +51,11 @@ if [ ! -f wp-config.php ]; then
 else
     echo "WordPress is already setup."
 fi
+
+# Change permissions at the end to also affect newly created folders
+
+chown -R www-data:www-data /var/www/*;
+chmod -R 755 /var/www/*;
 
 echo "Starting PHP-FPM..."
 exec /usr/sbin/php-fpm7.4 -F
