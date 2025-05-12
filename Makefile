@@ -46,12 +46,11 @@ down:
 clean:
 	$(COMPOSE) $(DOCKER_COMPOSE) down
 	docker system prune -af
-#	docker volume prune -f
 	$(REMOVE) $(VOLUME_MARIADB)
 	$(REMOVE) $(VOLUME_WORDPRESS)
 
 re: down up
 
-fullre: clean up
+fullre: clean all
 
-.PHONY: all env build clean fclean re restart
+.PHONY: all env build clean fclean re restart down up

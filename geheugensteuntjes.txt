@@ -1,0 +1,10 @@
+Open mariadb:
+
+docker exec -it mariadb 
+
+mariadb -D wordpress -p
+
+SHOW TABLES;
+
+SELECT [iets] of * FROM [folder];
+
