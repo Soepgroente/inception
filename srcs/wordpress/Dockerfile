@@ -5,8 +5,8 @@ RUN apt-get update -y && \
 
 RUN mkdir -p /run/php
 
-COPY /settings/www.conf /etc/php/7.4/fpm/pool.d
-COPY /settings/entrypoint.sh /
+COPY /tools/www.conf /etc/php/7.4/fpm/pool.d
+COPY /tools/entrypoint.sh /
 
 RUN chmod +x /entrypoint.sh
 

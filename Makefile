@@ -8,7 +8,8 @@ WORDPRESS	:= wordpress
 
 # Location of persistent data
 
-VOLUME				:= /home/$(USER)/data
+#VOLUME				:= /home/$(USER)/data
+VOLUME				:= $(HOME)/data
 VOLUME_MARIADB		:= $(VOLUME)/mariadb
 VOLUME_WORDPRESS	:= $(VOLUME)/wordpress
 
@@ -43,12 +44,10 @@ stop:
 down: 
 	$(COMPOSE) $(DOCKER_COMPOSE) down
 
-clean:
-	$(COMPOSE) $(DOCKER_COMPOSE) down
-	docker system prune -af
-#	docker volume prune -f
-	$(REMOVE) $(VOLUME_MARIADB)
-	$(REMOVE) $(VOLUME_WORDPRESS)
+clean: down
+#	$(COMPOSE) $(DOCKER_COMPOSE) down
+	docker network rm $(NETWORK)
+	docker volume rm $(VOLUME_MARIADB) $(VOLUME_WORDPRESS)
 
 re: down up
 
