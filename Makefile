@@ -51,6 +51,6 @@ clean: down
 
 re: down up
 
-fullre: clean up
+fullre: clean all
 
-.PHONY: all env build clean fclean re restart
+.PHONY: all env build clean fclean re restart down up
